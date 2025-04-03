@@ -7,9 +7,10 @@ namespace chess_console
     {
         public  static void Main(string[] args)
         {
-            Board tab = new Board(8,8);
+            Board board = new Board(8,8);
 
-            
+            Screen.printBoard(board);
+            Console.ReadLine();
         }
     }
 
