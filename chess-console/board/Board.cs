@@ -27,5 +27,11 @@ namespace board
         {
             return Pieces[line, column];
         }
+
+        public void placePeace(Piece p, Position pos)
+        {
+            Pieces[pos.Line, pos.Column] = p;
+            p.Position = pos;
+        }
     }
 }
