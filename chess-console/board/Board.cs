@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using board.Exceptions;
 
 namespace board
 {
@@ -28,10 +29,39 @@ namespace board
             return Pieces[line, column];
         }
 
+        public Piece piece(Position pos)
+        {
+            return Pieces[pos.Line, pos.Column];
+        }
         public void placePeace(Piece p, Position pos)
         {
             Pieces[pos.Line, pos.Column] = p;
             p.Position = pos;
+        }
+
+
+        public bool HavePiece(Position pos)
+        {
+            validPosition(pos);
+            return piece(pos) != null;
+        }
+
+        public bool PositionIsValid(Position pos)
+        {
+            if(pos.Line<0 || pos.Line>=Lines || pos.Column<0 || pos.Column >= Columns)
+            {
+                return false;
+            }
+            return true;
+        }
+
+
+        public void validPosition(Position pos)
+        {
+            if (!PositionIsValid(pos))
+            {
+                throw new BoardException("Posição inválida!");
+            }
         }
     }
 }
