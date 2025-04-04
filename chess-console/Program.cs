@@ -9,19 +9,26 @@ namespace chess_console
     {
         public static void Main(string[] args)
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             try
             {
-                Board board = new Board(8, 8);
+                ChessGame game = new ChessGame();
+                Screen.printBoard(game.Board);
 
-                board.placePiece(new Tower(board, Color.Black), new Position(0, 0));
+                while (!game.Finish)
+                {
+                    Console.Clear();
+                    Screen.printBoard(game.Board);
+                    Console.WriteLine();
+                    Console.WriteLine("Origem: ");
+                    Position origin = Screen.ReadPositionChess().toPosition();
+                    Console.WriteLine("Destino: ");
+                    Position destiny = Screen.ReadPositionChess().toPosition();
 
-                board.placePiece(new Tower(board, Color.Black), new Position(1, 3));
 
-                board.placePiece(new King(board, Color.White), new Position(2, 4));
+                    game.executeMovement(origin, destiny);
 
-                board.placePiece(new King(board, Color.White), new Position(3, 5));
-
-                Screen.printBoard(board);
+                }
 
             }
             catch (BoardException e)
