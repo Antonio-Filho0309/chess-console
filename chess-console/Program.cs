@@ -9,23 +9,9 @@ namespace chess_console
     {
         public static void Main(string[] args)
         {
-            try
-            {
-                Board board = new Board(8, 8);
-
-                board.placePeace(new Tower(board, Color.Black), new Position(0, 0));
-                board.placePeace(new King(board, Color.Black), new Position(0, 2));
-
-                board.placePeace(new Tower(board, Color.Black), new Position(1, 3));
-                board.placePeace(new King(board, Color.Black), new Position(2, 4));
-
-                Screen.printBoard(board);
-
-            }
-            catch (BoardException e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            ChessPosition pos = new ChessPosition('c', 7);
+            Console.WriteLine(pos);
+            Console.WriteLine(pos.toPosition());
             Console.ReadLine();
         }
     }
