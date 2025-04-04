@@ -9,29 +9,44 @@ namespace chess_console
     {
         public static void Main(string[] args)
         {
-            Console.OutputEncoding = System.Text.Encoding.UTF8;
             try
             {
                 ChessGame game = new ChessGame();
-                Screen.printBoard(game.Board);
 
                 while (!game.Finish)
                 {
-                    Console.Clear();
-                    Screen.printBoard(game.Board);
+                    try
+                    {
+                        Console.Clear();
+                        Screen.printBoard(game.Board);
+                        Console.WriteLine();
+                        Console.WriteLine($"Turno: {game.Turn}");
+                        Console.WriteLine($"Aguardando jogada: {game.CurrentPlayer}");
 
-                    Console.WriteLine();
-                    Console.WriteLine("Origem: ");
-                    Position origin = Screen.ReadPositionChess().toPosition();
-                    bool[,] possiblePosition = game.Board.piece(origin).possibleMovements();
+                        Console.WriteLine();
+                        Console.WriteLine("Origem: ");
+                        Position origin = Screen.ReadPositionChess().toPosition();
+                        game.ValidOriginPosition(origin);
 
-                    Console.Clear();
-                    Screen.printBoard(game.Board, possiblePosition);
+                        bool[,] possiblePosition = game.Board.piece(origin).possibleMovements();
 
-                    Console.WriteLine("Destino: ");
-                    Position destiny = Screen.ReadPositionChess().toPosition();
+                        Console.Clear();
+                        Screen.printBoard(game.Board, possiblePosition);
 
-                    game.executeMovement(origin, destiny);
+                        Console.WriteLine();
+                        Console.WriteLine("Destino: ");
+                        Position destiny = Screen.ReadPositionChess().toPosition();
+                        game.ValidDestinyPosition(origin, destiny);
+
+                        game.PlayTheGame(origin, destiny);
+                    }
+                    catch (BoardException e)
+                    {
+                        Console.WriteLine(" ");
+                        Console.WriteLine(e.Message +"!");
+                        Console.Write("\nPressione tecla ENTER para continuar:");
+                        Console.ReadLine();
+                    }
 
                 }
 
