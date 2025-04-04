@@ -19,12 +19,17 @@ namespace chess_console
                 {
                     Console.Clear();
                     Screen.printBoard(game.Board);
+
                     Console.WriteLine();
                     Console.WriteLine("Origem: ");
                     Position origin = Screen.ReadPositionChess().toPosition();
+                    bool[,] possiblePosition = game.Board.piece(origin).possibleMovements();
+
+                    Console.Clear();
+                    Screen.printBoard(game.Board, possiblePosition);
+
                     Console.WriteLine("Destino: ");
                     Position destiny = Screen.ReadPositionChess().toPosition();
-
 
                     game.executeMovement(origin, destiny);
 
