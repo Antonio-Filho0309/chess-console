@@ -18,10 +18,8 @@ namespace chess_console
                     try
                     {
                         Console.Clear();
-                        Screen.printBoard(game.Board);
-                        Console.WriteLine();
-                        Console.WriteLine($"Turno: {game.Turn}");
-                        Console.WriteLine($"Aguardando jogada: {game.CurrentPlayer}");
+                        Screen.printGame(game);
+                       
 
                         Console.WriteLine();
                         Console.WriteLine("Origem: ");
