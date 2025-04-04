@@ -15,8 +15,8 @@ namespace board
 
         public Board()
         {
-
         }
+
         public Board(int lines, int columns)
         {
             Lines = lines;
@@ -35,6 +35,10 @@ namespace board
         }
         public void placePeace(Piece p, Position pos)
         {
+            if(HavePiece(pos))
+            {
+                throw new BoardException("Já existe uma peça nessa posição");
+            }
             Pieces[pos.Line, pos.Column] = p;
             p.Position = pos;
         }
