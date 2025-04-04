@@ -3,7 +3,7 @@ namespace chess
 {
     class Tower : Piece
     {
-        public Tower(Board tab, Color color)
+        public Tower(Board board, Color color) : base(board, color)
         {
         }
 

@@ -13,9 +13,6 @@ namespace board
         public int Columns { get; set; }
         private Piece[,] Pieces;
 
-        public Board()
-        {
-        }
 
         public Board(int lines, int columns)
         {
@@ -33,7 +30,7 @@ namespace board
         {
             return Pieces[pos.Line, pos.Column];
         }
-        public void placePeace(Piece p, Position pos)
+        public void placePiece(Piece p, Position pos)
         {
             if(HavePiece(pos))
             {
