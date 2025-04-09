@@ -12,6 +12,11 @@ namespace chess_console
             Console.WriteLine();
             Console.WriteLine($"Turno: {game.Turn}");
             Console.WriteLine($"Aguardando jogada: {game.CurrentPlayer}");
+            if (game.Xeque)
+            {
+                Console.WriteLine("XEQUE!");
+            }
+            
         }
 
         public static void printCapturedPieces(ChessGame game)

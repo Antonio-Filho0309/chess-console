@@ -44,5 +44,10 @@ namespace board
         {
             AmountMovements++;
         }
+
+        public void decreaseMovement()
+        {
+            AmountMovements--;
+        }
     }
 }
