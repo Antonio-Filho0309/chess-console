@@ -11,12 +11,22 @@ namespace chess_console
             printCapturedPieces(game);
             Console.WriteLine();
             Console.WriteLine($"Turno: {game.Turn}");
-            Console.WriteLine($"Aguardando jogada: {game.CurrentPlayer}");
-            if (game.Xeque)
+
+            if (!game.Finish)
             {
-                Console.WriteLine("XEQUE!");
+                Console.WriteLine($"Aguardando jogada: {game.CurrentPlayer}");
+                if (game.Xeque)
+                {
+                    Console.WriteLine("XEQUE!");
+                }
             }
-            
+            else
+            {
+                Console.WriteLine("XEQUEMATE!");
+                Console.WriteLine($"Vencedor: " + game.CurrentPlayer);
+            }
+
+
         }
 
         public static void printCapturedPieces(ChessGame game)
@@ -38,7 +48,7 @@ namespace chess_console
             Console.Write("[");
             foreach (Piece x in joint)
             {
-                Console.Write(x+" ");
+                Console.Write(x + " ");
             }
             Console.Write("]");
         }

@@ -47,6 +47,8 @@ namespace chess_console
                     }
 
                 }
+                Console.Clear();
+                Screen.printGame(game);
 
             }
             catch (BoardException e)
