@@ -1,13 +1,11 @@
 ﻿using board;
-
-namespace chess
+namespace chess.Pieces
 {
-    class Tower : Piece
+    class Bishop : Piece
     {
-        public Tower(Board board, Color color) : base(board, color)
+        public Bishop(Board board, Color color) : base(board, color)
         {
         }
-
         private bool canMove(Position pos)
         {
             if (!Board.PositionIsValid(pos))
@@ -24,8 +22,20 @@ namespace chess
 
             Position pos = new Position(0, 0);
 
-            // Acima 
-            pos.setValues(Position.Line - 1, Position.Column);
+            //NO
+            pos.setValues(Position.Line - 1, Position.Column - 1);
+            while(Board.PositionIsValid(pos) && canMove(pos))
+            {
+                mat[pos.Line, pos.Column] = true;
+                if(Board.piece(pos) != null && Board.piece(pos).Color != Color)
+                {
+                    break;
+                }
+                pos.setValues(pos.Line - 1, pos.Column - 1);
+            }
+
+            //NE
+            pos.setValues(Position.Line - 1, Position.Column + 1);
             while (Board.PositionIsValid(pos) && canMove(pos))
             {
                 mat[pos.Line, pos.Column] = true;
@@ -33,11 +43,11 @@ namespace chess
                 {
                     break;
                 }
-                pos.Line--;
+                pos.setValues(pos.Line - 1, pos.Column + 1);
             }
 
-            // Abaixo
-            pos.setValues(Position.Line + 1, Position.Column);
+            //SE
+            pos.setValues(Position.Line + 1, Position.Column + 1);
             while (Board.PositionIsValid(pos) && canMove(pos))
             {
                 mat[pos.Line, pos.Column] = true;
@@ -45,11 +55,11 @@ namespace chess
                 {
                     break;
                 }
-                pos.Line++;
+                pos.setValues(pos.Line + 1, pos.Column + 1);
             }
 
-            // Direita
-            pos.setValues(Position.Line, Position.Column + 1);
+            //SO
+            pos.setValues(Position.Line + 1, Position.Column - 1);
             while (Board.PositionIsValid(pos) && canMove(pos))
             {
                 mat[pos.Line, pos.Column] = true;
@@ -57,28 +67,14 @@ namespace chess
                 {
                     break;
                 }
-                pos.Column++;
+                pos.setValues(pos.Line + 1, pos.Column - 1);
             }
-
-            // Esquerda
-            pos.setValues(Position.Line, Position.Column - 1);
-            while (Board.PositionIsValid(pos) && canMove(pos))
-            {
-                mat[pos.Line, pos.Column] = true;
-                if (Board.piece(pos) != null && Board.piece(pos).Color != Color)
-                {
-                    break;
-                }
-                pos.Column--;
-            }
-
             return mat;
         }
 
         public override string ToString()
         {
-            return "T";
+            return "B";
         }
     }
 }
-

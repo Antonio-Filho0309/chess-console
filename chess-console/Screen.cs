@@ -63,7 +63,7 @@ namespace chess_console
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine("  A B C D E F G H");
+            Console.WriteLine("  a b c d e f g h");
         }
 
         public static void printBoard(Board board, bool[,] mat)
