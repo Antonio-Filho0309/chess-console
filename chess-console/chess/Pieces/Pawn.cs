@@ -1,11 +1,14 @@
 ﻿using board;
-using System.Reflection.PortableExecutable;
+
 namespace chess.Pieces
 {
     class Pawn : Piece
     {
-        public Pawn(Board board, Color color) : base(board, color)
+        private ChessGame Game;
+
+        public Pawn(Board board, Color color, ChessGame game) : base(board, color)
         {
+            Game = game;
         }
 
         private bool HaveEnemy(Position pos)
@@ -19,16 +22,6 @@ namespace chess.Pieces
             return Board.piece(pos) == null;
         }
 
-        private bool canMove(Position pos)
-        {
-            if (!Board.PositionIsValid(pos))
-            {
-                return false;
-            }
-            Piece p = Board.piece(pos);
-            return p == null || p.Color != Color;
-        }
-
         public override bool[,] possibleMovements()
         {
             bool[,] mat = new bool[Board.Lines, Board.Columns];
@@ -37,14 +30,14 @@ namespace chess.Pieces
 
             if (Color == Color.White)
             {
-                // Movimento para frente 1 casa
+                // Movimento normal para frente
                 pos.setValues(Position.Line - 1, Position.Column);
                 if (Board.PositionIsValid(pos) && Free(pos))
                 {
                     mat[pos.Line, pos.Column] = true;
                 }
 
-                // Movimento para frente 2 casas (apenas no primeiro movimento)
+                // Primeiro movimento: duas casas
                 pos.setValues(Position.Line - 2, Position.Column);
                 Position intermediate = new Position(Position.Line - 1, Position.Column);
                 if (Board.PositionIsValid(pos) && Free(pos) && Free(intermediate) && AmountMovements == 0)
@@ -65,17 +58,33 @@ namespace chess.Pieces
                 {
                     mat[pos.Line, pos.Column] = true;
                 }
+
+                // Jogada especial: en passant
+                if (Position.Line == 3)
+                {
+                    Position left = new Position(Position.Line, Position.Column - 1);
+                    if (Board.PositionIsValid(left) && Board.piece(left) == Game.vulnerableInPassant)
+                    {
+                        mat[left.Line - 1, left.Column] = true;
+                    }
+
+                    Position right = new Position(Position.Line, Position.Column + 1);
+                    if (Board.PositionIsValid(right) && Board.piece(right) == Game.vulnerableInPassant)
+                    {
+                        mat[right.Line - 1, right.Column] = true;
+                    }
+                }
             }
             else
             {
-                // Movimento para frente 1 casa
+                // Movimento normal para frente
                 pos.setValues(Position.Line + 1, Position.Column);
                 if (Board.PositionIsValid(pos) && Free(pos))
                 {
                     mat[pos.Line, pos.Column] = true;
                 }
 
-                // Movimento para frente 2 casas (apenas no primeiro movimento)
+                // Primeiro movimento: duas casas
                 pos.setValues(Position.Line + 2, Position.Column);
                 Position intermediate = new Position(Position.Line + 1, Position.Column);
                 if (Board.PositionIsValid(pos) && Free(pos) && Free(intermediate) && AmountMovements == 0)
@@ -96,11 +105,26 @@ namespace chess.Pieces
                 {
                     mat[pos.Line, pos.Column] = true;
                 }
+
+                // Jogada especial: en passant
+                if (Position.Line == 4)
+                {
+                    Position left = new Position(Position.Line, Position.Column - 1);
+                    if (Board.PositionIsValid(left) && Board.piece(left) == Game.vulnerableInPassant)
+                    {
+                        mat[left.Line + 1, left.Column] = true;
+                    }
+
+                    Position right = new Position(Position.Line, Position.Column + 1);
+                    if (Board.PositionIsValid(right) && Board.piece(right) == Game.vulnerableInPassant)
+                    {
+                        mat[right.Line + 1, right.Column] = true;
+                    }
+                }
             }
 
             return mat;
         }
-
 
         public override string ToString()
         {

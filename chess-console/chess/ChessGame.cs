@@ -13,6 +13,7 @@ namespace chess
         public bool Finish { get; private set; }
         private HashSet<Piece> Pieces;
         private HashSet<Piece> Captured;
+        public Piece vulnerableInPassant { get; private set; }
         public bool Xeque { get; private set; }
 
         public ChessGame()
@@ -25,6 +26,7 @@ namespace chess
             Captured = new HashSet<Piece>();
             placePiece();
             Xeque = false;
+            vulnerableInPassant = null;
         }
 
         public Piece executeMovement(Position origin, Position destiny)
@@ -56,6 +58,25 @@ namespace chess
                 Piece T = Board.RemovePiece(originT);
                 T.increaseMovement();
                 Board.placePiece(T, destinyT);
+            }
+
+            //EN PASSANT
+            if (p is Pawn)
+            {
+                if(origin.Column != destiny.Column && capturedPiece == null)
+                {
+                    Position posP;
+                    if(p.Color == Color.White)
+                    {
+                        posP = new Position(destiny.Line + 1, destiny.Column);
+                    }
+                    else
+                    {
+                        posP = new Position(destiny.Line - 1, destiny.Column);
+                    }
+                    capturedPiece = Board.RemovePiece(posP);
+                    Captured.Add(capturedPiece);
+                }
             }
 
             return capturedPiece;
@@ -91,6 +112,24 @@ namespace chess
                 T.increaseMovement();
                 Board.placePiece(T, originT);
             }
+
+            //jogada especial en passant
+            if(p is Pawn)
+            {
+                if (origin.Column != destiny.Column && capturedPiece == vulnerableInPassant)
+                {
+                    Piece pawn = Board.RemovePiece(destiny);
+                    Position posP;
+                    if(p.Color == Color.White)
+                    {
+                        posP = new Position(3, destiny.Column);
+                    }
+                    else
+                    {
+                        posP = new Position(4, destiny.Column);
+                    }
+                }
+            }
         }
 
         public void PlayTheGame(Position origin, Position destiny)
@@ -121,6 +160,17 @@ namespace chess
             {
                 Turn++;
                 ChangePlayer();
+            }
+
+            Piece p = Board.piece(destiny);
+
+            //#jogadaespecial en passant
+            if (p is Pawn && (destiny.Line == origin.Line - 2 || destiny.Line == origin.Line))
+            {
+                vulnerableInPassant = p;
+            }else
+            {
+                vulnerableInPassant = null;
             }
         }
 
@@ -279,7 +329,7 @@ namespace chess
 
             for (char c = 'a'; c <= 'h'; c++)
             {
-                putNewPiece(c, 2, new Pawn(Board, Color.White));
+                putNewPiece(c, 2, new Pawn(Board, Color.White,this));
             }
 
 
@@ -294,7 +344,7 @@ namespace chess
             putNewPiece('h', 8, new Tower(Board, Color.Black));
             for (char c = 'a'; c <= 'h'; c++)
             {
-                putNewPiece(c, 7, new Pawn(Board, Color.Black));
+                putNewPiece(c, 7, new Pawn(Board, Color.Black, this));
             }
         }
     }
