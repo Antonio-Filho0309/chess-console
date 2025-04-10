@@ -37,21 +37,29 @@ namespace chess.Pieces
 
             if (Color == Color.White)
             {
+                // Movimento para frente 1 casa
                 pos.setValues(Position.Line - 1, Position.Column);
                 if (Board.PositionIsValid(pos) && Free(pos))
                 {
                     mat[pos.Line, pos.Column] = true;
                 }
-                pos.setValues(Position.Line -2, Position.Column);
-                if(Board.PositionIsValid(pos) && Free(pos) && AmountMovements ==0)
+
+                // Movimento para frente 2 casas (apenas no primeiro movimento)
+                pos.setValues(Position.Line - 2, Position.Column);
+                Position intermediate = new Position(Position.Line - 1, Position.Column);
+                if (Board.PositionIsValid(pos) && Free(pos) && Free(intermediate) && AmountMovements == 0)
                 {
                     mat[pos.Line, pos.Column] = true;
                 }
+
+                // Captura na diagonal esquerda
                 pos.setValues(Position.Line - 1, Position.Column - 1);
-                if(Board.PositionIsValid(pos) && HaveEnemy(pos))
+                if (Board.PositionIsValid(pos) && HaveEnemy(pos))
                 {
                     mat[pos.Line, pos.Column] = true;
                 }
+
+                // Captura na diagonal direita
                 pos.setValues(Position.Line - 1, Position.Column + 1);
                 if (Board.PositionIsValid(pos) && HaveEnemy(pos))
                 {
@@ -60,29 +68,39 @@ namespace chess.Pieces
             }
             else
             {
+                // Movimento para frente 1 casa
                 pos.setValues(Position.Line + 1, Position.Column);
                 if (Board.PositionIsValid(pos) && Free(pos))
                 {
                     mat[pos.Line, pos.Column] = true;
                 }
+
+                // Movimento para frente 2 casas (apenas no primeiro movimento)
                 pos.setValues(Position.Line + 2, Position.Column);
-                if (Board.PositionIsValid(pos) && Free(pos) && AmountMovements == 0)
+                Position intermediate = new Position(Position.Line + 1, Position.Column);
+                if (Board.PositionIsValid(pos) && Free(pos) && Free(intermediate) && AmountMovements == 0)
                 {
                     mat[pos.Line, pos.Column] = true;
                 }
+
+                // Captura na diagonal esquerda
                 pos.setValues(Position.Line + 1, Position.Column - 1);
                 if (Board.PositionIsValid(pos) && HaveEnemy(pos))
                 {
                     mat[pos.Line, pos.Column] = true;
                 }
+
+                // Captura na diagonal direita
                 pos.setValues(Position.Line + 1, Position.Column + 1);
                 if (Board.PositionIsValid(pos) && HaveEnemy(pos))
                 {
                     mat[pos.Line, pos.Column] = true;
                 }
             }
-                return mat;
+
+            return mat;
         }
+
 
         public override string ToString()
         {
